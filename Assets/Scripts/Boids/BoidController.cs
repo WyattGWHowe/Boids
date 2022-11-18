@@ -26,7 +26,9 @@ public class BoidController : MonoBehaviour
         }
     }
 
-    //Spawn boid and add the "OnBoidObject" script into the _listOfBoids list.
+    /// <summary>
+    /// Spawn boid and add the "OnBoidObject" script into the _listOfBoids list.
+    /// </summary>
     private void SpawnBoid()
     {
         GameObject newBoid = Instantiate(boidPrefab, Random.insideUnitSphere * Random.Range(-10f,10f), Quaternion.identity);
@@ -36,7 +38,9 @@ public class BoidController : MonoBehaviour
         _listOfBoids.Add(newBoid.GetComponent<OnBoidObject>());
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Loops through every boid and run the movement method on them.
+    /// </summary>
     void Update()
     {
         foreach (var boid in _listOfBoids)

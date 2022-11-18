@@ -17,10 +17,13 @@ public class OnBoidObject : MonoBehaviour
     {
         Vector3 direction = Vector3.zero;
 
+        
+        //These should be joined into a singular method.
+        //Keeping seperate for now to make it easier to make adjustments.
         direction += SeperationDirection(listOfBoids).normalized * .5f;
         direction += CohesionDirection(listOfBoids).normalized * .16f;
         direction += AlignmentDirection(listOfBoids).normalized * .34f;
-        direction += LeadershipSirection(listOfBoids);
+        direction += LeadershipDirection(listOfBoids);
         
        var targetPoint = _bc.targetPoint.transform.position;
        direction += (targetPoint - transform.position).normalized;
@@ -35,6 +38,11 @@ public class OnBoidObject : MonoBehaviour
         transform.position += transform.TransformDirection(new Vector3(0, 0, speed) * t);
     }
 
+    /// <summary>
+    /// Makes sure the boids dont collide into eachother, keeps them marginally seperate.
+    /// </summary>
+    /// <param name="listOfBoids"></param>
+    /// <returns></returns>
     private Vector3 SeperationDirection(List<OnBoidObject> listOfBoids)
     {
         Vector3 dir = Vector3.zero;
@@ -62,6 +70,11 @@ public class OnBoidObject : MonoBehaviour
         return dir;
     }
 
+    /// <summary>
+    /// Makes sure that each boid is following other boids in the same direction.
+    /// </summary>
+    /// <param name="listOfBoids"></param>
+    /// <returns></returns>
     private Vector3 AlignmentDirection(List<OnBoidObject> listOfBoids)
     {
         Vector3 dir = Vector3.zero;
@@ -84,6 +97,11 @@ public class OnBoidObject : MonoBehaviour
         return dir;
     }
     
+    /// <summary>
+    /// Makes sure that the boids stay atleast a little clumped together.
+    /// </summary>
+    /// <param name="listOfBoids"></param>
+    /// <returns></returns>
     private Vector3 CohesionDirection(List<OnBoidObject> listOfBoids)
     {
         Vector3 dir = Vector3.zero;
@@ -111,7 +129,13 @@ public class OnBoidObject : MonoBehaviour
         return dir;
     }
 
-    private Vector3 LeadershipSirection(List<OnBoidObject> listOfBoids)
+    
+    /// <summary>
+    /// Makes the boids follow a leader boid that will set the direction, makes sure that the boid at the back can still follow the leaders direction.
+    /// </summary>
+    /// <param name="listOfBoids"></param>
+    /// <returns></returns>
+    private Vector3 LeadershipDirection(List<OnBoidObject> listOfBoids)
     {
         float leaderAngle = 360;
         OnBoidObject leaderBoid = null;
@@ -139,6 +163,11 @@ public class OnBoidObject : MonoBehaviour
         return Vector3.zero;
     }
 
+    /// <summary>
+    /// Makes sure that the boids will avoid objects with the tag "Avoidance"
+    /// </summary>
+    /// <param name="direction"></param>
+    /// <returns></returns>
     private Vector3 ObjectAvoidance(Vector3 direction)
     {
         RaycastHit hitInfo;
